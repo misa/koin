@@ -56,15 +56,17 @@ val paragraphsPost1 = listOf(
     ),
     Paragraph(
         ParagraphType.Text,
-        "These modules are included in the settings.gradle file as:"
+        "These modules are included in the settings.gradle.kts file as:"
     ),
     Paragraph(
         ParagraphType.CodeBlock,
-        "include ':app'\n" +
-            "include ':features:module1'\n" +
-            "include ':features:module2'\n" +
-            "include ':features:module3'\n" +
-            "include ':features:module4'"
+        """
+        include(":app") 
+        include(":features:module1")
+        include(":features:module2")
+        include(":features:module3")
+        include(":features:module4")
+        """.trimIndent()
     ),
     Paragraph(
         ParagraphType.Text,
@@ -93,17 +95,17 @@ val paragraphsPost1 = listOf(
 
     Paragraph(
         ParagraphType.Text,
-        "In this particular case our settings.gradle becomes:",
+        "In this particular case our settings.gradle.kts becomes:",
         listOf(Markup(MarkupType.Code, 28, 43))
     ),
     Paragraph(
         ParagraphType.CodeBlock,
         """
-        include ':app'
-        include ':module1'
-        include ':module1'
-        include ':module1'
-        include ':module1'
+        include(":app")
+        include(":module1")
+        include(":module1")
+        include(":module1")
+        include(":module1")
         """.trimIndent()
     ),
     Paragraph(
@@ -271,7 +273,7 @@ val paragraphsPost2 = listOf(
     ),
     Paragraph(
         ParagraphType.Text,
-        "Include these compiler arguments in your build.gradle file to make Dagger more performant at build time:",
+        "Include these compiler arguments in your build.gradle.kts file to make Dagger more performant at build time:",
         listOf(Markup(MarkupType.Code, 41, 53))
     ),
     Paragraph(

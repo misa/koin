@@ -20,7 +20,7 @@ package org.koin.core
  *
  * @author Victor Alenkov
  */
-@RequiresOptIn(level = RequiresOptIn.Level.WARNING)
+//@RequiresOptIn(level = RequiresOptIn.Level.WARNING)
 @Target(
         AnnotationTarget.CLASS,
         AnnotationTarget.TYPEALIAS,

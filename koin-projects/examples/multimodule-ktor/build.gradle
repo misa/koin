@@ -1,12 +1,6 @@
 subprojects {
     apply plugin: 'kotlin'
 
-    kotlin {
-        experimental {
-            coroutines "enable"
-        }
-    }
-
     repositories {
         mavenLocal()
         jcenter()
@@ -14,5 +8,4 @@ subprojects {
         maven { url "https://dl.bintray.com/kotlin/kotlinx" }
         maven { url "https://dl.bintray.com/kotlin/ktor" }
     }
-
 }
