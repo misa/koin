@@ -6,8 +6,8 @@ archivesBaseName = 'koin-core-ext'
 
 dependencies {
     // Koin
-    compile project(":koin-core")
-    testImplementation project(":koin-test-junit4")
+    implementation project(":core:koin-core")
+    testImplementation project(":core:koin-test-junit4")
     testImplementation "junit:junit:$junit_version"
 }
 

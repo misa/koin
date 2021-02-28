@@ -17,15 +17,7 @@
 package com.example.jetnews.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredHeight
-import androidx.compose.foundation.layout.preferredWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -52,7 +44,7 @@ fun AppDrawer(
     closeDrawer: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
-        Spacer(Modifier.preferredHeight(24.dp))
+        Spacer(Modifier.height(24.dp))
         JetNewsLogo(Modifier.padding(16.dp))
         Divider(color = MaterialTheme.colors.onSurface.copy(alpha = .2f))
         DrawerButton(
@@ -81,13 +73,15 @@ fun AppDrawer(
 private fun JetNewsLogo(modifier: Modifier = Modifier) {
     Row(modifier = modifier) {
         Image(
-            imageVector = vectorResource(R.drawable.ic_jetnews_logo),
-            colorFilter = ColorFilter.tint(MaterialTheme.colors.primary)
+            imageVector = ImageVector.Companion.vectorResource(R.drawable.ic_jetnews_logo),
+            colorFilter = ColorFilter.tint(MaterialTheme.colors.primary),
+            contentDescription = "todo"
         )
-        Spacer(Modifier.preferredWidth(8.dp))
+        Spacer(Modifier.width(8.dp))
         Image(
-            imageVector = vectorResource(R.drawable.ic_jetnews_wordmark),
-            colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface)
+            imageVector = ImageVector.Companion.vectorResource(R.drawable.ic_jetnews_wordmark),
+            colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
+            contentDescription = "todo"
         )
     }
 }
@@ -137,9 +131,10 @@ private fun DrawerButton(
                 Image(
                     imageVector = icon,
                     colorFilter = ColorFilter.tint(textIconColor),
-                    alpha = imageAlpha
+                    alpha = imageAlpha,
+                    contentDescription = "todo"
                 )
-                Spacer(Modifier.preferredWidth(16.dp))
+                Spacer(Modifier.width(16.dp))
                 Text(
                     text = label,
                     style = MaterialTheme.typography.body2,

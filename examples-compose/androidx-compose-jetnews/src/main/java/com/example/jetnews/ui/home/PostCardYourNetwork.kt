@@ -18,16 +18,13 @@ package com.example.jetnews.ui.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredHeight
-import androidx.compose.foundation.layout.preferredSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -48,17 +45,18 @@ fun PostCardPopular(
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier.preferredSize(280.dp, 240.dp)
+        modifier = modifier.size(280.dp, 240.dp)
     ) {
         Column(modifier = Modifier.clickable(onClick = { navigateTo(Screen.Article(post.id)) })) {
-            val image = post.image ?: imageResource(R.drawable.placeholder_4_3)
+            val image = post.image ?: ImageBitmap.Companion.imageResource(R.drawable.placeholder_4_3)
 
             Image(
                 bitmap = image,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .preferredHeight(100.dp)
-                    .fillMaxWidth()
+                    .height(100.dp)
+                    .fillMaxWidth(),
+                contentDescription = "todo"
             )
 
             Column(modifier = Modifier.padding(16.dp)) {

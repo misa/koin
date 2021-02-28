@@ -21,8 +21,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import com.example.jetnews.data.Result
-import com.example.jetnews.ui.state.UiState
-import com.example.jetnews.ui.state.copyWithResult
+import com.example.jetnews.ui.UiState
+import com.example.jetnews.ui.copyWithResult
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch

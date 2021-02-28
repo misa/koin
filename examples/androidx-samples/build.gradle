@@ -1,14 +1,3 @@
-buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        jcenter()
-    }
-    dependencies {
-//        classpath "io.insert-koin:koin-gradle-plugin:$koin_version"
-    }
-}
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -49,13 +38,16 @@ android {
 dependencies {
 
     // Koin
-    implementation "io.insert-koin:koin-android-ext:$koin_version"
-    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
+    implementation project(":core:koin-core")
+    implementation project(":core:koin-core-ext")
+    implementation project(":android:koin-android")
+    implementation project(":android:koin-android-ext")
+    implementation project(":android:koin-androidx-workmanager")
 
     implementation "junit:junit:$junit_version"
 
-    testImplementation "io.insert-koin:koin-test:$koin_version"
-    testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
+    testImplementation project(":core:koin-test")
+    testImplementation project(":core:koin-test-junit4")
 
     testImplementation "junit:junit:$junit_version"
 
@@ -73,5 +65,4 @@ dependencies {
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
 
     testImplementation "org.mockito:mockito-inline:$mockito_version"
-
 }

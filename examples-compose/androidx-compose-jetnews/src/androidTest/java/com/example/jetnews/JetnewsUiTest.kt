@@ -16,13 +16,13 @@
 
 package com.example.jetnews
 
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.ui.test.assertIsDisplayed
-import androidx.ui.test.createComposeRule
-import androidx.ui.test.hasSubstring
-import androidx.ui.test.onNodeWithText
-import androidx.ui.test.performClick
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
@@ -32,7 +32,7 @@ import org.junit.Test
 class JetnewsUiTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule(disableTransitions = true)
+    val composeTestRule = createComposeRule()
 
     @Before
     fun setUp() {
@@ -49,7 +49,7 @@ class JetnewsUiTest {
     @Ignore("TODO Investigate why this passes locally but fail on CI")
     @Test
     fun app_opensArticle() {
-        composeTestRule.onAllNodes(hasSubstring("Manuel Vivo"))[0].performClick()
-        composeTestRule.onAllNodes(hasSubstring("3 min read"))[0].assertIsDisplayed()
+        composeTestRule.onAllNodesWithText("Manuel Vivo")[0].performClick()
+        composeTestRule.onAllNodesWithText("3 min read")[0].assertIsDisplayed()
     }
 }

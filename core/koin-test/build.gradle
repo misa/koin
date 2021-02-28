@@ -35,7 +35,7 @@ kotlin {
         commonMain {
             dependencies {
                 api kotlin("stdlib-common")
-                api project(":koin-core")
+                api project(":core:koin-core")
                 api kotlin("test-common")
                 api kotlin("test-annotations-common")
             }

@@ -52,13 +52,14 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 dependencies {
 
     // Koin
-    api "io.insert-koin:koin-android:$koin_version"
-    testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
+    api project(":android:koin-android")
+    testImplementation project(":core:koin-test-junit4")
     testImplementation 'junit:junit:4.13.1'
 
     /* Compose */
     api "androidx.compose.runtime:runtime:$androidx_compose_version"
     api "androidx.compose.ui:ui:$androidx_compose_version"
+    api "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha02"
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
 }

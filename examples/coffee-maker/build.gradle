@@ -1,10 +1,9 @@
 apply plugin: 'kotlin'
 
 dependencies {
-    implementation "io.insert-koin:koin-core:$koin_version"
+    implementation project(":core:koin-core")
 
-    testImplementation "io.insert-koin:koin-test:$koin_version"
-    testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
-//    testImplementation "junit:junit:$junit_version"
+    testImplementation project(":core:koin-test")
+    testImplementation project(":core:koin-test-junit4")
     testImplementation "io.mockk:mockk:$mockk_version"
 }

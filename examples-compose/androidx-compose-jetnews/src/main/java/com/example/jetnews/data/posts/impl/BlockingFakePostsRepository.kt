@@ -17,7 +17,8 @@
 package com.example.jetnews.data.posts.impl
 
 import android.content.Context
-import androidx.compose.ui.graphics.imageFromResource
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.res.imageResource
 import com.example.jetnews.data.Result
 import com.example.jetnews.data.posts.PostsRepository
 import com.example.jetnews.model.Post
@@ -38,8 +39,8 @@ class BlockingFakePostsRepository(private val context: Context) : PostsRepositor
     private val postsWithResources: List<Post> by lazy {
         posts.map {
             it.copy(
-                image = imageFromResource(context.resources, it.imageId),
-                imageThumb = imageFromResource(context.resources, it.imageThumbId)
+                image = ImageBitmap.Companion.imageResource(context.resources, it.imageId),
+                imageThumb = ImageBitmap.Companion.imageResource(context.resources, it.imageThumbId)
             )
         }
     }

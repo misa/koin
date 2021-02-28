@@ -18,8 +18,8 @@ android {
 
 dependencies {
     // Koin
-    api "io.insert-koin:koin-core-ext:$koin_version"
-    api project(":koin-android")
+    api project(":core:koin-core-ext")
+    api project(":android:koin-android")
 
 //    // Test
 //    testImplementation "io.insert-koin:koin-test:$koin_version"

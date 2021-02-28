@@ -26,14 +26,14 @@ android {
 dependencies {
 
     // Koin
-    implementation project(":koin-android-ext")
+    implementation project(":android:koin-android-ext")
     implementation 'junit:junit:4.12'
 
     implementation "com.android.support:appcompat-v7:$support_lib_version"
     implementation "android.arch.lifecycle:extensions:$android_arch_version"
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
 
-    testImplementation project(":koin-test")
+    testImplementation project(":core:koin-test")
 
     testImplementation 'junit:junit:4.13'
     testImplementation "org.robolectric:robolectric:4.2.1"

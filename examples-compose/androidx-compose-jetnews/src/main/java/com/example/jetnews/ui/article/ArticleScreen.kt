@@ -18,21 +18,8 @@ package com.example.jetnews.ui.article
 
 import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredHeight
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.AmbientContentColor
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material.TopAppBar
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -41,11 +28,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.savedinstancestate.savedInstanceState
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -117,7 +103,7 @@ fun ArticleScreen(
     onToggleFavorite: () -> Unit
 ) {
 
-    var showDialog by savedInstanceState { false }
+    var showDialog = false
     if (showDialog) {
         FunctionalityNotAvailablePopup { showDialog = false }
     }
@@ -129,17 +115,17 @@ fun ArticleScreen(
                     Text(
                         text = "Published in: ${post.publication?.name}",
                         style = MaterialTheme.typography.subtitle2,
-                        color = AmbientContentColor.current
+                        color = LocalContentColor.current
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Filled.ArrowBack)
+                        Icon(Icons.Filled.ArrowBack, "todo")
                     }
                 }
             )
         },
-        bodyContent = { innerPadding ->
+        content = { innerPadding ->
             val modifier = Modifier.padding(innerPadding)
             PostContent(post, modifier)
         },
@@ -173,23 +159,23 @@ private fun BottomBar(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .preferredHeight(56.dp)
+                .height(56.dp)
                 .fillMaxWidth()
         ) {
             IconButton(onClick = onUnimplementedAction) {
-                Icon(Icons.Filled.FavoriteBorder)
+                Icon(Icons.Filled.FavoriteBorder, "todo")
             }
             BookmarkButton(
                 isBookmarked = isFavorite,
                 onClick = onToggleFavorite
             )
-            val context = AmbientContext.current
+            val context = LocalContext.current
             IconButton(onClick = { sharePost(post, context) }) {
-                Icon(Icons.Filled.Share)
+                Icon(Icons.Filled.Share, "todo")
             }
             Spacer(modifier = Modifier.weight(1f))
             IconButton(onClick = onUnimplementedAction) {
-                Icon(vectorResource(R.drawable.ic_text_settings))
+                Icon(ImageVector.Companion.vectorResource(R.drawable.ic_text_settings), "todo")
             }
         }
     }
@@ -253,7 +239,7 @@ fun PreviewArticleDark() {
 
 @Composable
 private fun loadFakePost(postId: String): Post {
-    val context = AmbientContext.current
+    val context = LocalContext.current
     val post = runBlocking {
         (BlockingFakePostsRepository(context).getPost(postId) as Result.Success).data
     }

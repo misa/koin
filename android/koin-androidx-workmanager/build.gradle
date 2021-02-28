@@ -28,13 +28,13 @@ android {
 
 dependencies {
     // Koin
-    api project(":koin-android")
+    api project(":android:koin-android")
 
     // Android
     api "androidx.work:work-runtime-ktx:$androidx_workmanager"
 
     // Test
-    testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
+    testImplementation project(":core:koin-test-junit4")
 //    testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-inline:$mockito_version"
 

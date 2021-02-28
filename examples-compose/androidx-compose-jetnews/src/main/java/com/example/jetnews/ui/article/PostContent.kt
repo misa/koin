@@ -17,38 +17,21 @@
 package com.example.jetnews.ui.article
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredHeight
-import androidx.compose.foundation.layout.preferredSize
-import androidx.compose.foundation.layout.preferredWidth
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.AmbientContentAlpha
-import androidx.compose.material.AmbientContentColor
-import androidx.compose.material.Colors
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.Typography
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.FirstBaseline
-import androidx.compose.ui.platform.AmbientDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
@@ -63,41 +46,39 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jetnews.data.posts.impl.post3
-import com.example.jetnews.model.Markup
-import com.example.jetnews.model.MarkupType
-import com.example.jetnews.model.Metadata
-import com.example.jetnews.model.Paragraph
-import com.example.jetnews.model.ParagraphType
-import com.example.jetnews.model.Post
+import com.example.jetnews.model.*
 import com.example.jetnews.ui.ThemedPreview
 
 private val defaultSpacerSize = 16.dp
 
 @Composable
 fun PostContent(post: Post, modifier: Modifier = Modifier) {
-    ScrollableColumn(
+    LazyColumn(
         modifier = modifier.padding(horizontal = defaultSpacerSize)
     ) {
-        Spacer(Modifier.preferredHeight(defaultSpacerSize))
-        PostHeaderImage(post)
-        Text(text = post.title, style = MaterialTheme.typography.h4)
-        Spacer(Modifier.preferredHeight(8.dp))
-        post.subtitle?.let { subtitle ->
-            Providers(AmbientContentAlpha provides ContentAlpha.medium) {
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.body2,
-                    lineHeight = 20.sp
-                )
+        item {
+            Spacer(Modifier.height(defaultSpacerSize))
+            PostHeaderImage(post)
+            Text(text = post.title, style = MaterialTheme.typography.h4)
+            Spacer(Modifier.height(8.dp))
+            post.subtitle?.let { subtitle ->
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                    Text(
+                        text = subtitle,
+                        style = MaterialTheme.typography.body2,
+                        lineHeight = 20.sp
+                    )
+                }
+                Spacer(Modifier.height(defaultSpacerSize))
             }
-            Spacer(Modifier.preferredHeight(defaultSpacerSize))
+            PostMetadata(post.metadata)
+            Spacer(Modifier.height(24.dp))
+            PostContents(post.paragraphs)
+            Spacer(Modifier.height(48.dp))
         }
-        PostMetadata(post.metadata)
-        Spacer(Modifier.preferredHeight(24.dp))
-        PostContents(post.paragraphs)
-        Spacer(Modifier.preferredHeight(48.dp))
     }
 }
+
 
 @Composable
 private fun PostHeaderImage(post: Post) {
@@ -106,8 +87,8 @@ private fun PostHeaderImage(post: Post) {
             .heightIn(min = 180.dp)
             .fillMaxWidth()
             .clip(shape = MaterialTheme.shapes.medium)
-        Image(image, imageModifier, contentScale = ContentScale.Crop)
-        Spacer(Modifier.preferredHeight(defaultSpacerSize))
+        Image(image, "TODO", imageModifier, contentScale = ContentScale.Crop)
+        Spacer(Modifier.height(defaultSpacerSize))
     }
 }
 
@@ -117,11 +98,12 @@ private fun PostMetadata(metadata: Metadata) {
     Row {
         Image(
             imageVector = Icons.Filled.AccountCircle,
-            modifier = Modifier.preferredSize(40.dp),
-            colorFilter = ColorFilter.tint(AmbientContentColor.current),
-            contentScale = ContentScale.Fit
+            modifier = Modifier.requiredSize(40.dp),
+            colorFilter = ColorFilter.tint(LocalContentColor.current),
+            contentScale = ContentScale.Fit,
+            contentDescription = "TODO"
         )
-        Spacer(Modifier.preferredWidth(8.dp))
+        Spacer(Modifier.width(8.dp))
         Column {
             Text(
                 text = metadata.author.name,
@@ -129,7 +111,7 @@ private fun PostMetadata(metadata: Metadata) {
                 modifier = Modifier.padding(top = 4.dp)
             )
 
-            Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                 Text(
                     text = "${metadata.date} • ${metadata.readTimeMinutes} min read",
                     style = typography.caption
@@ -209,16 +191,16 @@ private fun BulletParagraph(
     paragraphStyle: ParagraphStyle
 ) {
     Row {
-        with(AmbientDensity.current) {
+        with(this) {
             // this box is acting as a character, so it's sized with font scaling (sp)
             Box(
                 modifier = Modifier
-                    .preferredSize(8.sp.toDp(), 8.sp.toDp())
+                    .requiredSize(8.dp, 8.dp)
                     .alignBy {
                         // Add an alignment "baseline" 1sp below the bottom of the circle
-                        9.sp.toIntPx()
+                        9
                     }
-                    .background(AmbientContentColor.current, CircleShape),
+                    .background(Color.Gray, CircleShape),
             ) { /* no content */ }
         }
         Text(

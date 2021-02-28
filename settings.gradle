@@ -1,0 +1,46 @@
+// Core
+include(":core:koin-core")
+include(":core:koin-core-ext")
+include(":core:koin-test")
+include(":core:koin-test-junit4")
+include(":core:koin-test-junit5")
+
+include(":ktor:koin-ktor")
+
+// Android
+include(":android:koin-android")
+include(":android:koin-android-compat")
+include(":android:koin-android-ext")
+include(":android:koin-androidx-workmanager")
+
+include(":android-compose:koin-androidx-compose")
+
+// Ktor
+include(":ktor:koin-ktor")
+include(":ktor:koin-logger-slf4j")
+
+// Getting started
+include(":quickstart:getting-started-koin-core")
+include(":quickstart:getting-started-koin-android")
+include(":quickstart:getting-started-koin-android:koin-app")
+include(":quickstart:getting-started-koin-ktor")
+
+// Main
+include(":examples:coffee-maker")
+include(":examples:android-perfs")
+
+// Android Samples
+include(":examples:androidx-samples")
+
+// Examples - Ktor
+include(":examples:hello-ktor")
+include(":examples:multimodule-ktor:app")
+include(":examples:multimodule-ktor:common")
+include(":examples:multimodule-ktor:module-a")
+include(":examples:multimodule-ktor:module-b")
+
+// Examples - Compose
+include(":examples-compose:androidx-compose")
+include(":examples-compose:androidx-compose-jetnews")
+
+enableFeaturePreview("GRADLE_METADATA")

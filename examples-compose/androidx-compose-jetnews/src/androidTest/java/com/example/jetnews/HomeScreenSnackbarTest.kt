@@ -20,13 +20,13 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.ExperimentalComposeApi
-import androidx.compose.runtime.snapshots.snapshotFlow
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.ui.test.assertIsDisplayed
-import androidx.ui.test.createComposeRule
-import androidx.ui.test.onNodeWithText
+import com.example.jetnews.ui.UiState
 import com.example.jetnews.ui.home.HomeScreen
-import com.example.jetnews.ui.state.UiState
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -39,7 +39,7 @@ import org.junit.Test
 class HomeScreenSnackbarTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule(disableTransitions = true)
+    val composeTestRule = createComposeRule()
 
     @OptIn(
         ExperimentalMaterialApi::class,

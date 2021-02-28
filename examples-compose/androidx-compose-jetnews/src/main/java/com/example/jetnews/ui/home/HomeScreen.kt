@@ -16,41 +16,17 @@
 
 package com.example.jetnews.ui.home
 
-import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.foundation.ScrollableRow
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredSize
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Divider
-import androidx.compose.material.DrawerValue
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.SnackbarResult
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.rememberDrawerState
-import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -61,11 +37,7 @@ import com.example.jetnews.data.Result
 import com.example.jetnews.data.posts.PostsRepository
 import com.example.jetnews.data.posts.impl.BlockingFakePostsRepository
 import com.example.jetnews.model.Post
-import com.example.jetnews.ui.AppDrawer
-import com.example.jetnews.ui.Screen
-import com.example.jetnews.ui.SwipeToRefreshLayout
-import com.example.jetnews.ui.ThemedPreview
-import com.example.jetnews.ui.state.UiState
+import com.example.jetnews.ui.*
 import com.example.jetnews.utils.produceUiState
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -161,7 +133,7 @@ fun HomeScreen(
         drawerContent = {
             AppDrawer(
                 currentScreen = Screen.Home,
-                closeDrawer = { scaffoldState.drawerState.close() },
+                closeDrawer = { scaffoldState.drawerState.isClosed },
                 navigateTo = navigateTo
             )
         },
@@ -170,13 +142,13 @@ fun HomeScreen(
             TopAppBar(
                 title = { Text(text = title) },
                 navigationIcon = {
-                    IconButton(onClick = { scaffoldState.drawerState.open() }) {
-                        Icon(vectorResource(R.drawable.ic_jetnews_logo))
+                    IconButton(onClick = { scaffoldState.drawerState.isOpen }) {
+                        Icon(ImageVector.Companion.vectorResource(R.drawable.ic_jetnews_logo), "todo")
                     }
                 }
             )
         },
-        bodyContent = { innerPadding ->
+        content = { innerPadding ->
             val modifier = Modifier.padding(innerPadding)
             LoadingContent(
                 empty = posts.initialLoad,
@@ -227,7 +199,7 @@ private fun LoadingContent(
                 Surface(elevation = 10.dp, shape = CircleShape) {
                     CircularProgressIndicator(
                         modifier = Modifier
-                            .preferredSize(36.dp)
+                            .requiredSize(36.dp)
                             .padding(4.dp)
                     )
                 }
@@ -292,11 +264,13 @@ private fun PostList(
     val postsPopular = posts.subList(2, 7)
     val postsHistory = posts.subList(7, 10)
 
-    ScrollableColumn(modifier = modifier) {
-        PostListTopSection(postTop, navigateTo)
-        PostListSimpleSection(postsSimple, navigateTo, favorites, onToggleFavorite)
-        PostListPopularSection(postsPopular, navigateTo)
-        PostListHistorySection(postsHistory, navigateTo)
+    LazyColumn(modifier = modifier) {
+        item {
+            PostListTopSection(postTop, navigateTo)
+            PostListSimpleSection(postsSimple, navigateTo, favorites, onToggleFavorite)
+            PostListPopularSection(postsPopular, navigateTo)
+            PostListHistorySection(postsHistory, navigateTo)
+        }
     }
 }
 
@@ -374,9 +348,11 @@ private fun PostListPopularSection(
             style = MaterialTheme.typography.subtitle1
         )
 
-        ScrollableRow(modifier = Modifier.padding(end = 16.dp)) {
+        LazyRow(modifier = Modifier.padding(end = 16.dp)) {
             posts.forEach { post ->
-                PostCardPopular(post, navigateTo, Modifier.padding(start = 16.dp, bottom = 16.dp))
+                item {
+                    PostCardPopular(post, navigateTo, Modifier.padding(start = 16.dp, bottom = 16.dp))
+                }
             }
         }
         PostListDivider()
@@ -430,7 +406,7 @@ private fun PreviewDrawerOpen() {
             drawerState = rememberDrawerState(DrawerValue.Open)
         )
         HomeScreen(
-            postsRepository = BlockingFakePostsRepository(AmbientContext.current),
+            postsRepository = BlockingFakePostsRepository(LocalContext.current),
             scaffoldState = scaffoldState,
             navigateTo = { }
         )
@@ -448,7 +424,7 @@ fun PreviewHomeScreenBodyDark() {
 
 @Composable
 private fun loadFakePosts(): List<Post> {
-    val context = AmbientContext.current
+    val context = LocalContext.current
     val posts = runBlocking {
         BlockingFakePostsRepository(context).getPosts()
     }
@@ -463,7 +439,7 @@ private fun PreviewDrawerOpenDark() {
             drawerState = rememberDrawerState(DrawerValue.Open)
         )
         HomeScreen(
-            postsRepository = BlockingFakePostsRepository(AmbientContext.current),
+            postsRepository = BlockingFakePostsRepository(LocalContext.current),
             scaffoldState = scaffoldState,
             navigateTo = { }
         )

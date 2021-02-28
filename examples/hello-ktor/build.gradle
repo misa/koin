@@ -6,10 +6,10 @@ dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    implementation "io.insert-koin:koin-ktor:$koin_version"
-    implementation "io.insert-koin:koin-logger-slf4j:$koin_version"
+    implementation project(":ktor:koin-ktor")
+    implementation project(":ktor:koin-logger-slf4j")
 
-    testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
+    testImplementation project(":core:koin-test-junit4")
 
     // Ktor
     implementation "io.ktor:ktor-server-netty:$ktor_version"
@@ -17,18 +17,4 @@ dependencies {
 
     // Logging
     implementation "ch.qos.logback:logback-classic:1.2.3"
-}
-
-repositories {
-    mavenLocal()
-    jcenter()
-    mavenCentral()
-    maven { url "https://dl.bintray.com/kotlin/kotlinx" }
-    maven { url "https://dl.bintray.com/kotlin/ktor" }
-}
-
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
 }

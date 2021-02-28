@@ -17,13 +17,8 @@
 package com.example.jetnews.ui.interests
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
@@ -43,10 +38,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -139,11 +135,11 @@ fun InterestsScreen(
     }
 
     val tabContent = listOf(topicsSection, peopleSection, publicationSection)
-    val (currentSection, updateSection) = savedInstanceState { tabContent.first().section }
+//    val (currentSection, updateSection) = tabContent.first().section
     InterestsScreen(
         tabContent = tabContent,
-        tab = currentSection,
-        onTabChange = updateSection,
+        tab = Sections.People,
+        onTabChange = {},
         navigateTo = navigateTo,
         scaffoldState = scaffoldState
     )
@@ -172,7 +168,7 @@ fun InterestsScreen(
         drawerContent = {
             AppDrawer(
                 currentScreen = Screen.Interests,
-                closeDrawer = { scaffoldState.drawerState.close() },
+                closeDrawer = { scaffoldState.drawerState.isClosed },
                 navigateTo = navigateTo
             )
         },
@@ -180,13 +176,13 @@ fun InterestsScreen(
             TopAppBar(
                 title = { Text("Interests") },
                 navigationIcon = {
-                    IconButton(onClick = { scaffoldState.drawerState.open() }) {
-                        Icon(vectorResource(R.drawable.ic_jetnews_logo))
+                    IconButton(onClick = { scaffoldState.drawerState.isOpen }) {
+                        Icon(ImageVector.Companion.vectorResource(R.drawable.ic_jetnews_logo), "todo")
                     }
                 }
             )
         },
-        bodyContent = {
+        content = {
             TabContent(tab, onTabChange, tabContent)
         }
     )
@@ -287,13 +283,15 @@ private fun TabWithTopics(
     selectedTopics: Set<String>,
     onTopicSelect: (String) -> Unit
 ) {
-    ScrollableColumn(modifier = Modifier.padding(top = 16.dp)) {
+    LazyColumn(modifier = Modifier.padding(top = 16.dp)) {
         topics.forEach { topic ->
-            TopicItem(
-                topic,
-                selected = selectedTopics.contains(topic)
-            ) { onTopicSelect(topic) }
-            TopicDivider()
+            item {
+                TopicItem(
+                    topic,
+                    selected = selectedTopics.contains(topic)
+                ) { onTopicSelect(topic) }
+                TopicDivider()
+            }
         }
     }
 }
@@ -311,19 +309,21 @@ private fun TabWithSections(
     selectedTopics: Set<TopicSelection>,
     onTopicSelect: (TopicSelection) -> Unit
 ) {
-    ScrollableColumn {
+    LazyColumn {
         sections.forEach { (section, topics) ->
-            Text(
-                text = section,
-                modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.subtitle1
-            )
-            topics.forEach { topic ->
-                TopicItem(
-                    itemTitle = topic,
-                    selected = selectedTopics.contains(TopicSelection(section, topic))
-                ) { onTopicSelect(TopicSelection(section, topic)) }
-                TopicDivider()
+            item {
+                Text(
+                    text = section,
+                    modifier = Modifier.padding(16.dp),
+                    style = MaterialTheme.typography.subtitle1
+                )
+                topics.forEach { topic ->
+                    TopicItem(
+                        itemTitle = topic,
+                        selected = selectedTopics.contains(TopicSelection(section, topic))
+                    ) { onTopicSelect(TopicSelection(section, topic)) }
+                    TopicDivider()
+                }
             }
         }
     }
@@ -338,7 +338,7 @@ private fun TabWithSections(
  */
 @Composable
 private fun TopicItem(itemTitle: String, selected: Boolean, onToggle: () -> Unit) {
-    val image = imageResource(R.drawable.placeholder_1_1)
+    val image = ImageBitmap.Companion.imageResource(R.drawable.placeholder_1_1)
     Row(
         modifier = Modifier
             .toggleable(
@@ -349,9 +349,10 @@ private fun TopicItem(itemTitle: String, selected: Boolean, onToggle: () -> Unit
     ) {
         Image(
             image,
+            "todo",
             Modifier
                 .align(Alignment.CenterVertically)
-                .preferredSize(56.dp, 56.dp)
+                .size(56.dp, 56.dp)
                 .clip(RoundedCornerShape(4.dp))
         )
         Text(

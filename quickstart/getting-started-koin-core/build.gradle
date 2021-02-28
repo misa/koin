@@ -1,31 +1,37 @@
-buildscript {
-    apply from: "../../gradle/versions.gradle"
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        jcenter()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
+plugins {
+    id 'org.jetbrains.kotlin.jvm' //version '1.4.31'
+    id 'application'
+}
+apply from: "../../gradle/versions.gradle"
+//apply plugin: 'kotlin'
+
+//kotlin {
+//    sourceSets {
+//        main.kotlin.srcDirs += 'src/main/kotlin'
+//        test.kotlin.srcDirs += 'src/test/kotlin'
+//    }
+//}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '1.8'
 }
 
-apply from: "../../gradle/versions.gradle"
-apply plugin: 'kotlin'
+compileTestKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    jcenter()
+application {
+    mainClassName = 'HelloApplicationKt'
 }
 
 dependencies {
     // Kotlin
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // Koin
-    compile "io.insert-koin:koin-core:$koin_version"
-    testCompile "io.insert-koin:koin-test-junit4:$koin_version"
+    implementation project(":core:koin-core")
+    testImplementation project(":core:koin-test")
+    testImplementation project(":core:koin-test-junit4")
 
-    testCompile "org.mockito:mockito-inline:$mockito_version"
+    testImplementation "org.mockito:mockito-inline:$mockito_version"
 }
